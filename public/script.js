@@ -4,14 +4,14 @@ var grassArr = [];
 var eaterArr = [];
 var fireArr = [];
 
-for (var i = 0; i < 15; i++) {
+for (var i = 0; i < 10; i++) {
     matrix[i] = [];
-    for (var j = 0; j < 25; j++) {
+    for (var j = 0; j < 15; j++) {
         matrix[i][j] = 0;
     }
 }
 function setup() {
-    for (var k = 0; k < 300; k++) {
+    for (var k = 0; k < 70; k++) {
         var x = Math.floor(random(0, matrix[0].length));
         var y = Math.floor(random(0, matrix.length));
         if (k % 10 == 0)
