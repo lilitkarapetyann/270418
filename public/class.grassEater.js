@@ -33,27 +33,25 @@ class Eater extends Parent {
 
 
     move() {
+        var tempArr;
         this.step++
-       // if (this.step % 2 == 0) {
-            var tempArr;
 
-            if (this.yntrelVandak(1).length > 0) {
-                tempArr = random(this.yntrelVandak(1));
-            }
-            else {
-                tempArr = random(this.yntrelVandak(0));
-            }
+        if (this.yntrelVandak(1).length > 0) {
+            tempArr = random(this.yntrelVandak(1));
+        }
+        else {
+            tempArr = random(this.yntrelVandak(0));
+        }
 
-            if (tempArr) {
-                if (tempArr[0] >= 0 && tempArr[0] < matrix[0].length && tempArr[1] >= 0 && tempArr[1] < matrix.length) {
-                    this.energy--;
-                    matrix[this.y][this.x] = 0;
-                    matrix[tempArr[1]][tempArr[0]] = 2;
-                    this.x = tempArr[0];
-                    this.y = tempArr[1];
-                }
+        if (tempArr) {
+            if (tempArr[0] >= 0 && tempArr[0] < matrix[0].length && tempArr[1] >= 0 && tempArr[1] < matrix.length) {
+                this.energy--;
+                matrix[this.y][this.x] = 0;
+                matrix[tempArr[1]][tempArr[0]] = 2;
+                this.x = tempArr[0];
+                this.y = tempArr[1];
             }
-        //}
+        }
     }
 
 
@@ -73,7 +71,6 @@ class Eater extends Parent {
             if (norVandak) {
                 matrix[norVandak[1]][norVandak[0]] = 2;
                 eaterArr.push(new Eater(norVandak[0], norVandak[1]));
-                //this.utel();
                 this.multiply = 0;
             }
         }
