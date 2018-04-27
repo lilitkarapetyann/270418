@@ -4,6 +4,7 @@
   "description": "",
   "main": "script.js",
   "scripts": {
+    "start":"node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,6 +15,11 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lilitkarapetyann/270418/issues"
+  },"dependencies": {
+    "express": "^4.16.2"
+  },
+  "engines": {
+    "node": "4.7.2"
   },
   "homepage": "https://github.com/lilitkarapetyann/270418#readme"
 }
