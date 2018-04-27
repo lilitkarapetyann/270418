@@ -48,7 +48,6 @@ class Fire extends Parent {
                 if (eaterArr[e]) {
                     if (eaterArr[e].x == this.body[i][0] && eaterArr[e].y == this.body[i][1]) {
                         eaterArr.splice(e, 1);
-                        console.log("eater")
                         e--
                     }
 
