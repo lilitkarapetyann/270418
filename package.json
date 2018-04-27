@@ -1,23 +1,19 @@
 {
-  "name": "programmin3",
+  "name": "270418",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "script.js",
   "scripts": {
-    "start":"node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lilitkarapetyann/programming3.git"
+    "url": "git+https://github.com/lilitkarapetyann/270418.git"
   },
-  "author": "lilitkarapetyann",
+  "author": "Lilit Karapetyan",
   "license": "ISC",
-
-  "dependencies": {
-    "express": "^4.16.2"
+  "bugs": {
+    "url": "https://github.com/lilitkarapetyann/270418/issues"
   },
-  "engines": {
-    "node": "4.7.2"
-  }
+  "homepage": "https://github.com/lilitkarapetyann/270418#readme"
 }
