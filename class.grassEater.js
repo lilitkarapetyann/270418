@@ -1,7 +1,8 @@
 class Eater extends Parent {
     constructor(x, y) {
         super(x, y);
-        this.energy = 5;
+        this.energy = 2;
+        this.step = 0;
     }
 
     eat() {
@@ -9,7 +10,7 @@ class Eater extends Parent {
             for (var i in grassArr) {
                 if (grassArr[i].x == eaterArr[j].x && grassArr[i].y == eaterArr[j].y) {
                     grassArr.splice(i, 1);
-                    if (this.energy <= 5)
+                    if (this.energy < 3)
                         this.energy++;
                     matrix[eaterArr[j].y][eaterArr[j].x] = 2;
                 }
@@ -32,24 +33,27 @@ class Eater extends Parent {
 
 
     move() {
-        var tempArr;
+        this.step++
+       // if (this.step % 2 == 0) {
+            var tempArr;
 
-        if (this.yntrelVandak(1).length > 0) {
-            tempArr = random(this.yntrelVandak(1));
-        }
-        else {
-            tempArr = random(this.yntrelVandak(0));
-        }
-
-        if (tempArr) {
-            if (tempArr[0] >= 0 && tempArr[0] < matrix[0].length && tempArr[1] >= 0 && tempArr[1] < matrix.length) {
-                this.energy--;
-                matrix[this.y][this.x] = 0;
-                matrix[tempArr[1]][tempArr[0]] = 2;
-                this.x = tempArr[0];
-                this.y = tempArr[1];
+            if (this.yntrelVandak(1).length > 0) {
+                tempArr = random(this.yntrelVandak(1));
             }
-        }
+            else {
+                tempArr = random(this.yntrelVandak(0));
+            }
+
+            if (tempArr) {
+                if (tempArr[0] >= 0 && tempArr[0] < matrix[0].length && tempArr[1] >= 0 && tempArr[1] < matrix.length) {
+                    this.energy--;
+                    matrix[this.y][this.x] = 0;
+                    matrix[tempArr[1]][tempArr[0]] = 2;
+                    this.x = tempArr[0];
+                    this.y = tempArr[1];
+                }
+            }
+        //}
     }
 
 
@@ -57,7 +61,7 @@ class Eater extends Parent {
     mul() {
         this.multiply++;
         var temp, norVandak;
-        if (this.multiply >= 7) {
+        if (this.multiply >= 5) {
             if (this.yntrelVandak(1).length != 0) {
                 temp = this.yntrelVandak(1);
             }

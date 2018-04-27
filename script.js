@@ -2,19 +2,19 @@ var matrix = [];
 var side = 40;
 var grassArr = [];
 var eaterArr = [];
-var predArr = [];
-var predLife = true;
-for (var i = 0; i < 10; i++) {
+var fireArr = [];
+
+for (var i = 0; i < 15; i++) {
     matrix[i] = [];
-    for (var j = 0; j < 15; j++) {
+    for (var j = 0; j < 25; j++) {
         matrix[i][j] = 0;
     }
 }
 function setup() {
-    for (var k = 0; k < 70; k++) {
+    for (var k = 0; k < 300; k++) {
         var x = Math.floor(random(0, matrix[0].length));
         var y = Math.floor(random(0, matrix.length));
-        if (k % 3 == 0)
+        if (k % 10 == 0)
             matrix[y][x] = 2;
         else
             matrix[y][x] = 1;
@@ -23,7 +23,7 @@ function setup() {
 
     createCanvas(matrix[0].length * side, matrix.length * side);
     background('#acacac');
-    frameRate(25);
+    frameRate(5);
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[0].length; x++) {
             if (matrix[y][x] == 1)
@@ -69,8 +69,19 @@ function draw() {
         eaterArr[i].die();
     }
 
+    if (eaterArr.length > grassArr.length / 3 && fireArr.length < 1) {
+        fireArr.push(new Fire(Math.floor(random(0 + 2, matrix[0].length - 2)), Math.floor(random(0 + 2, matrix.length - 2))));
+    }
 
-    if (eaterArr.length > 10 && predLife) {
+    for (var i in fireArr) {
+        // console.log(fireArr[i].multiply);
+        if (fireArr.length > 0) {
+            fireArr[i].multiply++;
+            fireArr[i].burn();
+            fireArr[i].body = fireArr[i].grow();
+        }
+    }
+    /*if (eaterArr.length > 10 && predLife) {
         if (matrix[Math.floor(matrix.length / 2)][Math.floor(matrix[0].length / 2)] == 1) {
             for (var i in grassArr) {
                 if (grassArr[i].x == Math.floor(matrix[0].length / 2) && grassArr[i].y == Math.floor(matrix.length / 2)) {
@@ -100,5 +111,5 @@ function draw() {
     for (var i in predArr) {
         predArr[i].move()
         predArr[i].eat();
-    }
+    }*/
 }
