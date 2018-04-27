@@ -1,12 +1,14 @@
-var express = require("express");
+var express = require('express');
+var path = require('path');
 var app = express();
 
-app.use(express.static("public"));
+// Define the port to run on
+app.set('port', process.env.PORT || 3000);
 
-app.get("/", function(req, res){
-   res.redirect("public");
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(3000, function(){
-   console.log("Example is running on port 3000");
+// Listen for requests
+var server = app.listen(app.get('port'), function() {
+  var port = server.address().port;
+  console.log('Magic happens on port ' + port);
 });

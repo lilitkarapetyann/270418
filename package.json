@@ -1,5 +1,5 @@
 {
-  "name": "270418",
+  "name": "test",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -11,15 +11,16 @@
     "type": "git",
     "url": "git+https://github.com/lilitkarapetyann/270418.git"
   },
-  "author": "Lilit Karapetyan",
+  "author": "lilitkarapetyann",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lilitkarapetyann/270418/issues"
-  },"dependencies": {
+  },
+  "homepage": "https://programming3-lilit.herokuapp.com/",
+  "dependencies": {
     "express": "^4.16.2"
   },
   "engines": {
     "node": "4.7.2"
-  },
-  "homepage": "https://github.com/lilitkarapetyann/270418#readme"
+  }
 }
