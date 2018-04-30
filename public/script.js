@@ -1,17 +1,18 @@
 var matrix = [];
-var side = 40;
+var side = 35;
 var grassArr = [];
 var eaterArr = [];
 var fireArr = [];
-
-for (var i = 0; i < 10; i++) {
+var w = 15; // w > 7, w >= h
+var h = 10; // h > 7
+for (var i = 0; i < h; i++) {
     matrix[i] = [];
-    for (var j = 0; j < 15; j++) {
+    for (var j = 0; j < w; j++) {
         matrix[i][j] = 0;
     }
 }
 function setup() {
-    for (var k = 0; k < 70; k++) {
+    for (var k = 0; k < w * h / 2; k++) {
         var x = Math.floor(random(0, matrix[0].length));
         var y = Math.floor(random(0, matrix.length));
         if (k % 10 == 0)
@@ -57,9 +58,17 @@ function draw() {
             }
         }
     }
-    
-    if ((eaterArr.length > grassArr.length / 3 || eaterArr.length < grassArr.length * 4)&& fireArr.length < 1) {
-        fireArr.push(new Fire(Math.floor(random(0 + 2, matrix[0].length - 2)), Math.floor(random(0 + 2, matrix.length - 2))));
+
+    if (fireArr.length < 1) {
+        var temp;
+        if (eaterArr.length > grassArr.length / 3) {
+            temp = random(eaterArr)
+            fireArr.push(new Fire(temp.x, temp.y));
+        }
+        else if (eaterArr.length < grassArr.length * 4) {
+            temp = random(grassArr)
+            fireArr.push(new Fire(temp.x, temp.y));
+        }
     }
 
     for (var i in grassArr) {
@@ -76,10 +85,14 @@ function draw() {
 
     for (var i in fireArr) {
         if (fireArr.length > 0) {
+            if (eaterArr.length == 0 || grassArr.length == 0)
+                fireArr[i].maxN = w>=h? w : h ;
             fireArr[i].multiply++;
             fireArr[i].burn(grassArr);
             fireArr[i].burn(eaterArr);
             fireArr[i].body = fireArr[i].grow();
+            if (eaterArr.length == 0 && grassArr.length == 0)
+                fireArr[i].die(fireArr[i].maxN);
         }
     }
 }
