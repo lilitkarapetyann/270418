@@ -58,7 +58,7 @@ function draw() {
         }
     }
     
-    if (eaterArr.length > grassArr.length / 3 && fireArr.length < 1) {
+    if ((eaterArr.length > grassArr.length / 3 || eaterArr.length < grassArr.length * 4)&& fireArr.length < 1) {
         fireArr.push(new Fire(Math.floor(random(0 + 2, matrix[0].length - 2)), Math.floor(random(0 + 2, matrix.length - 2))));
     }
 
@@ -77,7 +77,8 @@ function draw() {
     for (var i in fireArr) {
         if (fireArr.length > 0) {
             fireArr[i].multiply++;
-            fireArr[i].burn();
+            fireArr[i].burn(grassArr);
+            fireArr[i].burn(eaterArr);
             fireArr[i].body = fireArr[i].grow();
         }
     }

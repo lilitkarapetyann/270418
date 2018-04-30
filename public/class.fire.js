@@ -28,30 +28,20 @@ class Fire extends Parent {
         }
     }
 
-    burn() {
-        for (var g = 0; g < grassArr.length; g++) {
+    burn(array) {
+        for (var a = 0; a < array.length; a++) {
             for (var i = 0; i < this.body.length; i++) {
-                if (grassArr[g]) {
-                    if (grassArr[g].x == this.body[i][0] && grassArr[g].y == this.body[i][1]) {
-                        console.log("grass")
-                        grassArr.splice(g, 1);
-                        g--
+                if (array[a]) {
+                    if (array[a].x == this.body[i][0] && array[a].y == this.body[i][1]) {
+                        array.splice(a, 1);
+                        a--;
                     }
 
                 }
             }
         }
 
-        for (var e = 0; e < eaterArr.length; e++) {
-            for (var i = 0; i < this.body.length; i++) {
-                if (eaterArr[e]) {
-                    if (eaterArr[e].x == this.body[i][0] && eaterArr[e].y == this.body[i][1]) {
-                        eaterArr.splice(e, 1);
-                        e--;
-                    }
-                }
-            }
-        }
+
     }
 
     die() {
