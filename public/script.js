@@ -37,11 +37,12 @@ function setup() {
 
 
 function draw() {
+    //noStroke()
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
 
             if (matrix[y][x] == 1) {
-                fill("green");
+                fill("#47a840");
                 rect(x * side, y * side, side, side);
             }
             else if (matrix[y][x] == 0) {
