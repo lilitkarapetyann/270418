@@ -1,4 +1,4 @@
-class Parent {
+module.exports = class Parent {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -12,8 +12,8 @@ class Parent {
         for (var i in this.directions) {
             var x = this.directions[i][0];
             var y = this.directions[i][1];
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-                if (matrix[y][x] == ch) {
+            if (x >= 0 && x < global.matrix[0].length && y >= 0 && y < global.matrix.length) {
+                if (global.matrix[y][x] == ch) {
                     found.push(this.directions[i]);
                 }
             }

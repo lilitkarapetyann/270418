@@ -1,4 +1,4 @@
-var matrix = [];
+/*var matrix = [];
 var side = 35;
 var grassArr = [];
 var eaterArr = [];
@@ -97,3 +97,38 @@ function draw() {
         }
     }
 }
+*/
+var w = 15; // w > 7, w >= h
+var h = 10; // h > 7
+var side = 35;
+var socket = io.connect('http://localhost:3000');
+
+function setup() {
+    createCanvas(w * side, h * side);
+    background('#acacac');
+}
+
+
+socket.on('matrix', function (data) {
+    background("#acacac")
+    var matrix = data;
+    for (var y = 0; y < matrix.length; y++) {
+        for (var x = 0; x < matrix[y].length; x++) {
+
+            if (matrix[y][x] == 1) {
+                fill("#47a840");
+            }
+            else if (matrix[y][x] == 0) {
+                fill("#acacac");
+            }
+            else if (matrix[y][x] == 2) {
+                fill("yellow");
+            }
+            else if (matrix[y][x] == 3) {
+                fill("red");
+            }
+            rect(x * side, y * side, side, side);
+        }
+    }
+
+});

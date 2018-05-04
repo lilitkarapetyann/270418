@@ -1,4 +1,6 @@
-class Fire extends Parent {
+var Parent = require('./class.parent')
+
+module.exports = class Fire extends Parent {
     constructor(x, y) {
         super(x, y);
         this.n = 0;
@@ -21,9 +23,9 @@ class Fire extends Parent {
         else {
             for (var i = -this.n; i <= this.n; i++) {
                 for (var j = -this.n; j <= this.n; j++) {
-                    if (this.y + j < matrix.length && this.y + j >= 0 && this.y + j < matrix[0].length && this.y + j >= 0) {
+                    if (this.y + j < global.matrix.length && this.y + j >= 0 && this.y + j < global.matrix[0].length && this.y + j >= 0) {
                         tempArr.push([this.x + i, this.y + j]);
-                        matrix[this.y + j][this.x + i] = 3;
+                        global.matrix[this.y + j][this.x + i] = 3;
                     }
                 }
             }
@@ -48,16 +50,16 @@ class Fire extends Parent {
     }
 
     die(n) {
-        for (var k in fireArr) {
-            if (fireArr[k].x == this.x && fireArr[k].y == this.y) {
+        for (var k in global.fireArr) {
+            if (global.fireArr[k].x == this.x && global.fireArr[k].y == this.y) {
                 for (var i = -n + 1; i <= n - 1; i++) {
                     for (var j = -n + 1; j <= n - 1; j++) {
-                        if (this.y + j < matrix.length && this.y + j >= 0 && this.y + j < matrix[0].length && this.y + j >= 0) {
-                            matrix[this.y + j][this.x + i] = 0;
+                        if (this.y + j < global.matrix.length && this.y + j >= 0 && this.y + j < global.matrix[0].length && this.y + j >= 0) {
+                            global.matrix[this.y + j][this.x + i] = 0;
                         }
                     }
                 }
-                fireArr.splice(k, 1);
+                global.fireArr.splice(k, 1);
                 break;
             }
         }
