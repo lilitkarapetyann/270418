@@ -5,9 +5,11 @@ var io = require('socket.io')(http);
 var Grass = require('./class.grass')
 var Eater = require('./class.grassEater')
 var Fire = require('./class.fire')
-var w = 15;
-var h = 10;
-matrix = randMatrix(w, h);
+var w = 25;
+var h = 20;
+var frameCounter = 0;
+global.weather = 0;// 0:winter, 1:spring, 2:summer, 3:fall
+global.matrix = randMatrix(w, h);
 global.grassArr = [];
 global.eaterArr = [];
 global.fireArr = [];
@@ -17,26 +19,35 @@ app.get('/', function (req, res) {
 });
 
 http.listen(3000, function () {
-  console.log("3000")
+  //console.log("3000")
 });
 for (var y = 0; y < global.matrix.length; y++) {
-        for (var x = 0; x < global.matrix[0].length; x++) {
-            if (global.matrix[y][x] == 1)
-                global.grassArr.push(new Grass(x, y));
-            else if (global.matrix[y][x] == 2)
-                global.eaterArr.push(new Eater(x, y));
-        }
+  for (var x = 0; x < global.matrix[0].length; x++) {
+    if (global.matrix[y][x] == 1)
+      global.grassArr.push(new Grass(x, y));
+    else if (global.matrix[y][x] == 2) {
+      var rand = (Math.round(Math.random())) / 2;
+      global.eaterArr.push(new Eater(x, y, rand));
+      global.matrix[y][x] += rand;
     }
+  }
+}
 io.on('connection', function (socket) {
   setInterval(function () {
+    frameCounter++
+    if (frameCounter % 10 == 0) {
+      global.weather++;
+      global.weather %= 4;
+      //console.log(global.weather)
+    }
     if (global.fireArr.length < 1) {
       var temp;
       if (global.eaterArr.length > global.grassArr.length / 3) {
-        temp = global.eaterArr[Math.floor(Math.random(global.eaterArr.length))]
+        temp = global.eaterArr[Math.floor(Math.random() * global.eaterArr.length)]
         global.fireArr.push(new Fire(temp.x, temp.y));
       }
       else if (global.eaterArr.length < global.grassArr.length * 4) {
-        temp = global.grassArr[Math.floor(Math.random(global.grassArr.length))]
+        temp = global.grassArr[Math.floor(Math.random() * global.grassArr.length)]
         global.fireArr.push(new Fire(temp.x, temp.y));
       }
     }
@@ -46,8 +57,9 @@ io.on('connection', function (socket) {
     }
 
     for (var i in global.eaterArr) {
-      global.eaterArr[i].directions = global.eaterArr[i].directionMaker(1)
-      global.eaterArr[i].mul();
+      global.eaterArr[i].directions = global.eaterArr[i].directionMaker(1);
+      if (global.eaterArr[i].mf > 0)
+        global.eaterArr[i].mul();
       global.eaterArr[i].move();
       global.eaterArr[i].eat();
       global.eaterArr[i].die();
@@ -65,18 +77,30 @@ io.on('connection', function (socket) {
           global.fireArr[i].die(global.fireArr[i].maxN);
       }
     }
+    socket.emit('weather', global.weather)
     socket.emit('matrix', global.matrix);
 
-  }, 100);
+  }, 200);
 });
 
 
-function randMatrix(w, h, num = 2) {
+function randMatrix(w, h) {
   var matrix = [];
   for (var i = 0; i < h; i++) {
     matrix[i] = [];
     for (var j = 0; j < w; j++) {
-      matrix[i][j] = Math.round(Math.random() * num);
+      matrix[i][j] = 0
+    }
+  }
+
+  for(var i = 0 ; i < w*h/2; i++){
+    var randX =  Math.floor(Math.random()*matrix[0].length)
+    var randY =  Math.floor(Math.random()*matrix.length)
+    if(i % 3){
+      matrix[randY][randX] = 2
+    }
+    else{
+      matrix[randY][randX] = 1
     }
   }
   return matrix;

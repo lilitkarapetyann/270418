@@ -1,9 +1,10 @@
 var Parent = require('./class.parent')
 module.exports = class Eater extends Parent {
-    constructor(x, y) {
+    constructor(x, y, mf) {
         super(x, y);
         this.energy = 2;
         this.step = 0;
+        this.mf = mf;
     }
 
     eat() {
@@ -38,10 +39,10 @@ module.exports = class Eater extends Parent {
         this.step++
 
         if (this.yntrelVandak(1).length > 0) {
-            tempArr = this.yntrelVandak(1)[Math.floor(Math.random(this.yntrelVandak(1).length))];
+            tempArr = this.yntrelVandak(1)[Math.floor(Math.random() * this.yntrelVandak(1).length)];
         }
         else {
-            tempArr = this.yntrelVandak(0)[Math.floor(Math.random(this.yntrelVandak(0).length))];
+            tempArr = this.yntrelVandak(0)[Math.floor(Math.random() * this.yntrelVandak(0).length)];
         }
 
         if (tempArr) {
@@ -58,21 +59,23 @@ module.exports = class Eater extends Parent {
 
 
     mul() {
-        this.multiply++;
-        var temp, norVandak;
-        if (this.multiply >= 5) {
-            if (this.yntrelVandak(1).length != 0) {
-                temp = this.yntrelVandak(1);
-            }
-            else {
-                temp = this.yntrelVandak(0);
-            }
+        if (this.yntrelVandak(2).length > 0) {
+            this.multiply++;
+            var temp, norVandak;
+            if (this.multiply >= global.weather == 0 ? 10 : 5) {
+                if (this.yntrelVandak(1).length != 0) {
+                    temp = this.yntrelVandak(1);
+                }
+                else {
+                    temp = this.yntrelVandak(0);
+                }
 
-            norVandak = temp[Math.floor(Math.random(temp.length))];
-            if (norVandak) {
-                global.matrix[norVandak[1]][norVandak[0]] = 2;
-                global.eaterArr.push(new Eater(norVandak[0], norVandak[1]));
-                this.multiply = 0;
+                norVandak = temp[Math.floor(Math.random() * temp.length)];
+                if (norVandak) {
+                    global.matrix[norVandak[1]][norVandak[0]] = 2;
+                    global.eaterArr.push(new Eater(norVandak[0], norVandak[1]));
+                    this.multiply = 0;
+                }
             }
         }
     }

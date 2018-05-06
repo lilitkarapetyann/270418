@@ -1,122 +1,35 @@
-/*var matrix = [];
-var side = 35;
-var grassArr = [];
-var eaterArr = [];
-var fireArr = [];
-var w = 15; // w > 7, w >= h
-var h = 10; // h > 7
-for (var i = 0; i < h; i++) {
-    matrix[i] = [];
-    for (var j = 0; j < w; j++) {
-        matrix[i][j] = 0;
-    }
-}
-function setup() {
-    for (var k = 0; k < w * h / 2; k++) {
-        var x = Math.floor(random(0, matrix[0].length));
-        var y = Math.floor(random(0, matrix.length));
-        if (k % 10 == 0)
-            matrix[y][x] = 2;
-        else
-            matrix[y][x] = 1;
-    }
-
-
-    createCanvas(matrix[0].length * side, matrix.length * side);
-    background('#acacac');
-    frameRate(5);
-    for (var y = 0; y < matrix.length; y++) {
-        for (var x = 0; x < matrix[0].length; x++) {
-            if (matrix[y][x] == 1)
-                grassArr.push(new Grass(x, y));
-            else if (matrix[y][x] == 2)
-                eaterArr.push(new Eater(x, y));
-        }
-    }
-}
-
-
-function draw() {
-    //noStroke()
-    for (var y = 0; y < matrix.length; y++) {
-        for (var x = 0; x < matrix[y].length; x++) {
-
-            if (matrix[y][x] == 1) {
-                fill("#47a840");
-                rect(x * side, y * side, side, side);
-            }
-            else if (matrix[y][x] == 0) {
-                fill("#acacac");
-                rect(x * side, y * side, side, side);
-            }
-            else if (matrix[y][x] == 2) {
-                fill("yellow");
-                rect(x * side, y * side, side, side);
-            }
-            else if (matrix[y][x] == 3) {
-                fill("red");
-                rect(x * side, y * side, side, side);
-            }
-        }
-    }
-
-    if (fireArr.length < 1) {
-        var temp;
-        if (eaterArr.length > grassArr.length / 3) {
-            temp = random(eaterArr)
-            fireArr.push(new Fire(temp.x, temp.y));
-        }
-        else if (eaterArr.length < grassArr.length * 4) {
-            temp = random(grassArr)
-            fireArr.push(new Fire(temp.x, temp.y));
-        }
-    }
-
-    for (var i in grassArr) {
-        grassArr[i].mul();
-    }
-
-    for (var i in eaterArr) {
-        eaterArr[i].directions = eaterArr[i].directionMaker(1)
-        eaterArr[i].mul();
-        eaterArr[i].move();
-        eaterArr[i].eat();
-        eaterArr[i].die();
-    }
-
-    for (var i in fireArr) {
-        if (fireArr.length > 0) {
-            if (eaterArr.length == 0 || grassArr.length == 0)
-                fireArr[i].maxN = w>=h? w : h ;
-            fireArr[i].multiply++;
-            fireArr[i].burn(grassArr);
-            fireArr[i].burn(eaterArr);
-            fireArr[i].body = fireArr[i].grow();
-            if (eaterArr.length == 0 && grassArr.length == 0)
-                fireArr[i].die(fireArr[i].maxN);
-        }
-    }
-}
-*/
-var w = 15; // w > 7, w >= h
-var h = 10; // h > 7
+var w = 25; // w > 7, w >= h
+var h = 20; // h > 7
 var side = 35;
 var socket = io.connect('http://localhost:3000');
-
+var weather = ['Winter', 'Spring', 'Summer', 'Fall']
+var currentWeather,matrix;
 function setup() {
     createCanvas(w * side, h * side);
     background('#acacac');
 }
-
+socket.on('weather', function (data) {
+    var h1 = document.getElementById('weather');
+    h1.innerHTML = weather[data];
+    currentWeather = data;
+});
 
 socket.on('matrix', function (data) {
     background("#acacac")
-    var matrix = data;
+    matrix = data;
+    //console.log(currentWeather)
+    stroke(0, 0, 0)
+    strokeWeight(1)
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
 
             if (matrix[y][x] == 1) {
-                fill("#47a840");
+                if (currentWeather == 0)
+                    fill("#d6f2ff");
+                else if (currentWeather == 3)
+                    fill("#ffc35b");
+                else
+                    fill("#47a840");
             }
             else if (matrix[y][x] == 0) {
                 fill("#acacac");
@@ -131,4 +44,24 @@ socket.on('matrix', function (data) {
         }
     }
 
+    if(currentWeather == 1 || currentWeather == 3)
+    {   
+        noStroke();
+        fill('#72d9ff')
+        rain(side)
+    }
+
 });
+
+
+function rain(side){
+    var x,y
+    for(var i = 0; i < 20; i++)
+    {
+        x = Math.floor(random(0,matrix.length)*side - Math.floor(side/2));
+        y = Math.floor(random(0,matrix[0].length)*side - Math.floor(side/2));
+        console.log(x,y)
+        ellipse(x , y , 10,10)
+    }
+    
+}
