@@ -57,7 +57,7 @@ io.on('connection', function (socket) {
 
       for (var i = 0; i < 5; i++) {
         y = Math.floor(Math.random() * global.matrix.length);
-        x = Math.floor(Math.random() * global.matrix[0].length);
+        x = Math.floor(Math.random() * global.matrix[y].length);
         global.rainArr.push({ x: x, y: y })
         global.matrix[y][x] = global.matrix[y][x].toString();
       }
@@ -89,7 +89,7 @@ io.on('connection', function (socket) {
     }
 
     for (var i in global.fireArr) {
-      if (global.fireArr.length > 0) {
+      //if (global.fireArr.length > 0) {
         if (global.eaterArr.length == 0 || global.grassArr.length == 0)
           global.fireArr[i].maxN = w >= h ? w : h;
         global.fireArr[i].multiply++;
@@ -107,17 +107,17 @@ io.on('connection', function (socket) {
             }
           }
         }*/
-      }
+      //}
     }
     try{
     socket.emit('weather', global.weather)
-    console.log(matrix.length)
+    //console.log(matrix.length)
     }catch(e){
       console.log("error weather",e)
     }
      try{
     socket.emit('matrix', global.matrix);
-    console.log(matrix.length)
+    //console.log(matrix.length)
     }catch(e){
           console.log("error matrix",e)
         }

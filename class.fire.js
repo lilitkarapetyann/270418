@@ -11,7 +11,6 @@ module.exports = class Fire extends Parent {
 
     grow() {
         var tempArr = []
-
         if (this.multiply >= 3 && this.n < this.maxN) {
             this.n++
             this.multiply = 0;
@@ -23,7 +22,7 @@ module.exports = class Fire extends Parent {
         else {
             for (var i = -this.n; i <= this.n; i++) {
                 for (var j = -this.n; j <= this.n; j++) {
-                    if (this.y + j < global.matrix.length && this.y + j >= 0 && this.y + j < global.matrix[0].length && this.y + j >= 0) {
+                    if (this.y + j < global.matrix.length && this.y + j >= 0 && this.x + i < global.matrix[0].length && this.x + i >= 0) {
                         tempArr.push([this.x + i, this.y + j]);
                         global.matrix[this.y + j][this.x + i] = 3;
                     }
