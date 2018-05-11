@@ -3,7 +3,7 @@ var h = 20; // h > 7
 var side = 35;
 var socket = io.connect('http://localhost:3000');
 var weather = ['Winter', 'Spring', 'Summer', 'Fall']
-var currentWeather,matrix;
+var currentWeather, matrix;
 function setup() {
     createCanvas(w * side, h * side);
     background('#acacac');
@@ -13,7 +13,9 @@ socket.on('weather', function (data) {
     h1.innerHTML = weather[data];
     currentWeather = data;
 });
+socket.on('rain', function (data) {
 
+});
 socket.on('matrix', function (data) {
     background("#acacac")
     matrix = data;
@@ -22,7 +24,8 @@ socket.on('matrix', function (data) {
     strokeWeight(1)
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
-
+            stroke(0, 0, 0)
+            strokeWeight(1)
             if (matrix[y][x] == 1) {
                 if (currentWeather == 0)
                     fill("#d6f2ff");
@@ -41,20 +44,25 @@ socket.on('matrix', function (data) {
                 fill("red");
             }
             rect(x * side, y * side, side, side);
+            if (typeof matrix[y][x] == typeof 'string') {
+                noStroke();
+                fill('#72d9ff')
+                ellipse(x * side + side/2 , y * side + side/2 , 10, 10)
+            }
         }
     }
 
-    if(currentWeather == 1 || currentWeather == 3)
-    {   
+    /*if (currentWeather == 1 || currentWeather == 3) {
         noStroke();
         fill('#72d9ff')
-        rain(side)
-    }
+        //rain(side)
+        console.log()
+    }*/
 
 });
 
 
-function rain(side){
+/*function rain(side){
     var x,y
     for(var i = 0; i < 20; i++)
     {
@@ -64,4 +72,4 @@ function rain(side){
         ellipse(x , y , 10,10)
     }
     
-}
+}*/
