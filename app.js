@@ -14,6 +14,8 @@ global.grassArr = [];
 global.eaterArr = [];
 global.fireArr = [];
 global.rainArr = [];
+global.maleEater = 0;
+global.femaleEater = 0;
 app.use(express.static("./public"));
 app.get('/', function (req, res) {
   res.redirect('index.html');
@@ -22,6 +24,8 @@ app.get('/', function (req, res) {
 http.listen(3000, function () {
   //console.log("3000")
 });
+
+
 for (var y = 0; y < global.matrix.length; y++) {
   for (var x = 0; x < global.matrix[0].length; x++) {
     if (global.matrix[y][x] == 1)
@@ -30,6 +34,12 @@ for (var y = 0; y < global.matrix.length; y++) {
       var rand = (Math.round(Math.random())) / 2;
       global.eaterArr.push(new Eater(x, y, rand));
       global.matrix[y][x] += rand;
+      if(global.matrix[y][x] > 2){
+        global.femaleEater++
+      }
+      else{
+        global.maleEater++
+      }
     }
   }
 }
@@ -41,7 +51,7 @@ io.on('connection', function (socket) {
       global.weather %= 4;
       //console.log(global.weather)
     }
-    if (global.fireArr.length < 1 && (global.weather == 1 || global.weather == 3)) {
+    if (global.fireArr.length < 1 && global.weather == 2) {
       var temp;
       if (global.eaterArr.length > global.grassArr.length / 3) {
         temp = global.eaterArr[Math.floor(Math.random() * global.eaterArr.length)]
@@ -90,7 +100,7 @@ io.on('connection', function (socket) {
 
     for (var i in global.fireArr) {
       //if (global.fireArr.length > 0) {
-        if (global.eaterArr.length == 0 || global.grassArr.length == 0)
+        if (global.eaterArr.length == 0 || global.grassArr.length == 0 || global.maleEater == 0 || global.femaleEater == 0 )
           global.fireArr[i].maxN = w >= h ? w : h;
         global.fireArr[i].multiply++;
         global.fireArr[i].burn(global.grassArr);

@@ -24,6 +24,12 @@ module.exports = class Eater extends Parent {
         if (this.energy == 0) {
             for (var k in global.eaterArr) {
                 if (global.eaterArr[k].x == this.x && global.eaterArr[k].y == this.y) {
+                    if (global.matrix[this.y][this.x] > 2) {
+                        global.femaleEater--
+                    }
+                    else {
+                        global.maleEater--
+                    }
                     global.eaterArr.splice(k, 1);
                     global.matrix[this.y][this.x] = 0;
                     break;
@@ -72,7 +78,14 @@ module.exports = class Eater extends Parent {
 
                 norVandak = temp[Math.floor(Math.random() * temp.length)];
                 if (norVandak) {
-                    global.matrix[norVandak[1]][norVandak[0]] = 2;
+                    var rand = (Math.round(Math.random())) / 2;
+                    global.matrix[norVandak[1]][norVandak[0]] = 2 + rand;
+                    if (global.matrix[norVandak[1]][norVandak[0]] > 2) {
+                        global.femaleEater++
+                    }
+                    else {
+                        global.maleEater++
+                    }
                     global.eaterArr.push(new Eater(norVandak[0], norVandak[1]));
                     this.multiply = 0;
                 }

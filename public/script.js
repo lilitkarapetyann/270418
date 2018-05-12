@@ -37,7 +37,7 @@ socket.on('matrix', function (data) {
             else if (matrix[y][x] == 0) {
                 fill("#acacac");
             }
-            else if (matrix[y][x] == 2) {
+            else if (matrix[y][x] == Math.floor(2)) {
                 fill("yellow");
             }
             else if (matrix[y][x] == 3) {
@@ -48,6 +48,11 @@ socket.on('matrix', function (data) {
                 noStroke();
                 fill('#72d9ff')
                 ellipse(x * side + side/2 , y * side + side/2 , 10, 10)
+                
+            }
+
+            if(currentWeather == 1 || currentWeather == 3){
+                //lightening(random(matrix.length)*side + side/2 , random(matrix[0].length)*side+ side/2)
             }
         }
     }
@@ -73,3 +78,13 @@ socket.on('matrix', function (data) {
     }
     
 }*/
+
+function lightening(x,y){
+    strokeWeight(5)
+    stroke(255,255,0)
+    line(x, 0, x - 60, y/3);
+    strokeWeight(4)
+    line(x-60, y/3, x + 60  , y/3*2);
+    strokeWeight(3)
+    line(x+60, y/3*2, x  , y);
+}
