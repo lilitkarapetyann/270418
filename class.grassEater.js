@@ -5,6 +5,7 @@ module.exports = class Eater extends Parent {
         this.energy = 2;
         this.step = 0;
         this.mf = mf;
+        this.count = 0;
     }
 
     eat() {
@@ -21,7 +22,7 @@ module.exports = class Eater extends Parent {
     }
 
     die() {
-        if (this.energy == 0) {
+        
             for (var k in global.eaterArr) {
                 if (global.eaterArr[k].x == this.x && global.eaterArr[k].y == this.y) {
                     if (global.matrix[this.y][this.x] > 2) {
@@ -34,7 +35,7 @@ module.exports = class Eater extends Parent {
                     global.matrix[this.y][this.x] = 0;
                     break;
                 }
-            }
+            
         }
     }
 
@@ -43,7 +44,7 @@ module.exports = class Eater extends Parent {
     move() {
         var tempArr;
         this.step++
-
+        this.count++
         if (this.yntrelVandak(1).length > 0) {
             tempArr = this.yntrelVandak(1)[Math.floor(Math.random() * this.yntrelVandak(1).length)];
         }
@@ -55,7 +56,7 @@ module.exports = class Eater extends Parent {
             if (tempArr[0] >= 0 && tempArr[0] < global.matrix[0].length && tempArr[1] >= 0 && tempArr[1] < global.matrix.length) {
                 this.energy--;
                 global.matrix[this.y][this.x] = 0;
-                global.matrix[tempArr[1]][tempArr[0]] = 2;
+                global.matrix[tempArr[1]][tempArr[0]] = 2 + this.mf;
                 this.x = tempArr[0];
                 this.y = tempArr[1];
             }

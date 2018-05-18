@@ -34,10 +34,10 @@ for (var y = 0; y < global.matrix.length; y++) {
       var rand = (Math.round(Math.random())) / 2;
       global.eaterArr.push(new Eater(x, y, rand));
       global.matrix[y][x] += rand;
-      if(global.matrix[y][x] > 2){
+      if (global.matrix[y][x] > 2) {
         global.femaleEater++
       }
-      else{
+      else {
         global.maleEater++
       }
     }
@@ -95,43 +95,44 @@ io.on('connection', function (socket) {
         global.eaterArr[i].mul();
       global.eaterArr[i].move();
       global.eaterArr[i].eat();
-      global.eaterArr[i].die();
+      if (global.eaterArr[i].energy == 0)
+        global.eaterArr[i].die();
     }
 
     for (var i in global.fireArr) {
       //if (global.fireArr.length > 0) {
-        if (global.eaterArr.length == 0 || global.grassArr.length == 0 || global.maleEater == 0 || global.femaleEater == 0 )
-          global.fireArr[i].maxN = w >= h ? w : h;
-        global.fireArr[i].multiply++;
-        global.fireArr[i].burn(global.grassArr);
-        global.fireArr[i].burn(global.eaterArr);
-        global.fireArr[i].body = global.fireArr[i].grow();
-        if (global.eaterArr.length == 0 && global.grassArr.length == 0)
-          global.fireArr[i].die(global.fireArr[i].maxN);
+      if (global.eaterArr.length == 0 || global.grassArr.length == 0 || global.maleEater == 0 || global.femaleEater == 0)
+        global.fireArr[i].maxN = w >= h ? w : h;
+      global.fireArr[i].multiply++;
+      global.fireArr[i].burn(global.grassArr);
+      global.fireArr[i].burn(global.eaterArr);
+      global.fireArr[i].body = global.fireArr[i].grow();
+      if (global.eaterArr.length == 0 && global.grassArr.length == 0)
+        global.fireArr[i].die(global.fireArr[i].maxN);
 
-        /*for (var j in global.rainArr) {
-          for (var k in global.fireArr[i].body) {
-            if (global.rainArr[j].x == global.fireArr[i].body[k][0] && global.rainArr[j].y == global.fireArr[i].body[k][1]) {
-              global.matrix[global.fireArr[i].body[k][1]][global.fireArr[i].body[k][0]] = 0
-              global.fireArr[i].body[k].splice(k, 1);
-            }
+      /*for (var j in global.rainArr) {
+        for (var k in global.fireArr[i].body) {
+          if (global.rainArr[j].x == global.fireArr[i].body[k][0] && global.rainArr[j].y == global.fireArr[i].body[k][1]) {
+            global.matrix[global.fireArr[i].body[k][1]][global.fireArr[i].body[k][0]] = 0
+            global.fireArr[i].body[k].splice(k, 1);
           }
-        }*/
+        }
+      }*/
       //}
     }
-    try{
-    socket.emit('weather', global.weather)
-    //console.log(matrix.length)
-    }catch(e){
-      console.log("error weather",e)
+    try {
+      socket.emit('weather', global.weather)
+      //console.log(matrix.length)
+    } catch (e) {
+      console.log("error weather", e)
     }
-     try{
-    socket.emit('matrix', global.matrix);
-    //console.log(matrix.length)
-    }catch(e){
-          console.log("error matrix",e)
-        }
-  }, 200);
+    try {
+      socket.emit('matrix', global.matrix);
+      //console.log(matrix.length)
+    } catch (e) {
+      console.log("error matrix", e)
+    }
+  }, 500);
 });
 
 
@@ -147,12 +148,12 @@ function randMatrix(w, h) {
   for (var i = 0; i < w * h / 2; i++) {
     var randX = Math.floor(Math.random() * matrix[0].length)
     var randY = Math.floor(Math.random() * matrix.length)
-    if (i % 3) {
+    if (i < 25)
       matrix[randY][randX] = 2
-    }
-    else {
+    else
       matrix[randY][randX] = 1
-    }
+
   }
+
   return matrix;
 }

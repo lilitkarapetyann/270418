@@ -4,6 +4,7 @@ var side = 35;
 var socket = io.connect('http://localhost:3000');
 var weather = ['Winter', 'Spring', 'Summer', 'Fall']
 var currentWeather, matrix;
+var lighteningArr = [];
 function setup() {
     createCanvas(w * side, h * side);
     background('#acacac');
@@ -47,13 +48,26 @@ socket.on('matrix', function (data) {
             if (typeof matrix[y][x] == typeof 'string') {
                 noStroke();
                 fill('#72d9ff')
-                ellipse(x * side + side/2 , y * side + side/2 , 10, 10)
-                
+                ellipse(x * side + side / 2, y * side + side / 2, 10, 10)
+
             }
 
-            if(currentWeather == 1 || currentWeather == 3){
-                //lightening(random(matrix.length)*side + side/2 , random(matrix[0].length)*side+ side/2)
+            if (currentWeather == 1 || currentWeather == 3) {
+                if (lighteningArr.length < 3) {
+                    //console.log(lighteningArr.length)
+                    var ly = Math.floor(Math.random() * matrix.length)
+                    var lx = Math.floor(Math.random() * matrix[y].length)
+                    // console.log(x)
+                    lighteningArr.push({ x: lx, y: ly });
+                }
             }
+            else {
+                lighteningArr = [];
+            }
+
+        }
+        for (var l = 0; l < lighteningArr.length; l++) {
+            lightening(lighteningArr[l].x * side + 10, lighteningArr[l].y * side + 10);
         }
     }
 
@@ -79,12 +93,12 @@ socket.on('matrix', function (data) {
     
 }*/
 
-function lightening(x,y){
+function lightening(x, y) {
     strokeWeight(5)
-    stroke(255,255,0)
-    line(x, 0, x - 60, y/3);
+    stroke(255, 255, 0)
+    line(x, 0, x - 60, y / 3);
     strokeWeight(4)
-    line(x-60, y/3, x + 60  , y/3*2);
+    line(x - 60, y / 3, x + 60, y / 3 * 2);
     strokeWeight(3)
-    line(x+60, y/3*2, x  , y);
+    line(x + 60, y / 3 * 2, x, y);
 }
