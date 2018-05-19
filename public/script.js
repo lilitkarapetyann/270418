@@ -14,13 +14,10 @@ socket.on('weather', function (data) {
     h1.innerHTML = weather[data];
     currentWeather = data;
 });
-socket.on('rain', function (data) {
 
-});
 socket.on('matrix', function (data) {
     background("#acacac")
     matrix = data;
-    //console.log(currentWeather)
     stroke(0, 0, 0)
     strokeWeight(1)
     for (var y = 0; y < matrix.length; y++) {
@@ -51,54 +48,23 @@ socket.on('matrix', function (data) {
                 ellipse(x * side + side / 2, y * side + side / 2, 10, 10)
 
             }
-
-            if (currentWeather == 1 || currentWeather == 3) {
-                if (lighteningArr.length < 3) {
-                    //console.log(lighteningArr.length)
-                    var ly = Math.floor(Math.random() * matrix.length)
-                    var lx = Math.floor(Math.random() * matrix[y].length)
-                    // console.log(x)
-                    lighteningArr.push({ x: lx, y: ly });
-                }
-            }
-            else {
-                lighteningArr = [];
-            }
-
-        }
-        for (var l = 0; l < lighteningArr.length; l++) {
-            lightening(lighteningArr[l].x * side + 10, lighteningArr[l].y * side + 10);
         }
     }
-
-    /*if (currentWeather == 1 || currentWeather == 3) {
-        noStroke();
-        fill('#72d9ff')
-        //rain(side)
-        console.log()
-    }*/
 
 });
 
+socket.on("lightening", function (data) {
+    if (matrix[data.y][data.x] != 0)
+        lightening(data.x * side + Math.round(side / 2), data.y * side + Math.round(side / 2));
+});
 
-/*function rain(side){
-    var x,y
-    for(var i = 0; i < 20; i++)
-    {
-        x = Math.floor(random(0,matrix.length)*side - Math.floor(side/2));
-        y = Math.floor(random(0,matrix[0].length)*side - Math.floor(side/2));
-        console.log(x,y)
-        ellipse(x , y , 10,10)
-    }
-    
-}*/
 
 function lightening(x, y) {
-    strokeWeight(5)
+    strokeWeight(13)
     stroke(255, 255, 0)
-    line(x, 0, x - 60, y / 3);
-    strokeWeight(4)
-    line(x - 60, y / 3, x + 60, y / 3 * 2);
+    line(x, 0, x - y / 5, y / 3);
+    strokeWeight(7)
+    line(x - y / 5, y / 3, x + y / 5, y / 3 * 2);
     strokeWeight(3)
-    line(x + 60, y / 3 * 2, x, y);
+    line(x + y / 5, y / 3 * 2, x, y);
 }

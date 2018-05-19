@@ -26,10 +26,10 @@ module.exports = class Eater extends Parent {
             for (var k in global.eaterArr) {
                 if (global.eaterArr[k].x == this.x && global.eaterArr[k].y == this.y) {
                     if (global.matrix[this.y][this.x] > 2) {
-                        global.femaleEater--
+                        global.femaleEater--;
                     }
                     else {
-                        global.maleEater--
+                        global.maleEater--;
                     }
                     global.eaterArr.splice(k, 1);
                     global.matrix[this.y][this.x] = 0;
