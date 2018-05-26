@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var fs = require('fs')
 var Grass = require('./class.grass');
 var Eater = require('./class.grassEater');
 var Fire = require('./class.fire');
@@ -14,7 +15,7 @@ global.grassArr = [];
 global.eaterArr = [];
 global.fireArr = [];
 global.rainArr = [];
-var lgtning;
+var lgtning, stat;
 global.maleEater = 0;
 global.femaleEater = 0;
 app.use(express.static("./public"));
@@ -35,12 +36,6 @@ for (var y = 0; y < global.matrix.length; y++) {
       var rand = (Math.round(Math.random())) / 2;
       global.eaterArr.push(new Eater(x, y, rand));
       global.matrix[y][x] += rand;
-      if (global.matrix[y][x] > 2) {
-        global.femaleEater++;
-      }
-      else {
-        global.maleEater++;
-      }
     }
   }
 }
@@ -51,6 +46,20 @@ io.on('connection', function (socket) {
     frameCounter++;
 
     if (frameCounter % 10 == 0) {
+      if (frameCounter % 1 == 0) {
+        updateStats();
+        stat = {
+          'eater': global.eaterArr.length,
+          'male': global.maleEater,
+          'female': global.femaleEater,
+          'grass': global.grassArr.length,
+          'rain': rainArr.length ? true : false
+        }
+          fs.writeFileSync('statistics.json', JSON.stringify(stat), 'utf8', (err) => {
+            if (err) throw err;
+            console.log('Written');
+          });
+      }
       global.weather++;
       global.weather %= 4;
     }
@@ -74,7 +83,8 @@ io.on('connection', function (socket) {
           temp = global.grassArr[Math.floor(Math.random() * global.grassArr.length)]
           global.fireArr.push(new Fire(temp.x, temp.y));
         }
-        lgtning = { x: temp.x, y: temp.y };
+        if (temp && temp.x && temp.y)
+          lgtning = { x: temp.x, y: temp.y };
       }
 
     }
@@ -114,7 +124,7 @@ io.on('connection', function (socket) {
 
     for (var i in global.fireArr) {
 
-      if (global.eaterArr.length == 0 || global.grassArr.length == 0 || global.maleEater == 0 || global.femaleEater == 0)
+      if (global.eaterArr.length == 0 || global.grassArr.length == 0)
         global.fireArr[i].maxN = w >= h ? w : h;
       global.fireArr[i].multiply++;
       global.fireArr[i].burn(global.grassArr);
@@ -166,3 +176,19 @@ function randMatrix(w, h) {
 }
 
 
+
+
+function updateStats() {
+  global.maleEater = 0;
+  global.femaleEater = 0;
+  for(let y in matrix) {
+    for(let x in matrix[y]) {
+      if(matrix[y][x] == 2) {
+        global.maleEater++;
+      }
+      if(matrix[y][x] == 2.5) {
+        global.femaleEater++;
+      }
+    }
+  }
+}

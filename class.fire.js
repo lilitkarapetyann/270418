@@ -37,6 +37,12 @@ module.exports = class Fire extends Parent {
             for (var i = 0; i < this.body.length; i++) {
                 if (array[a]) {
                     if (array[a].x == this.body[i][0] && array[a].y == this.body[i][1]) {
+                        if (global.matrix[array[a].y][array[a].x] == 2.5) { 
+                            // global.femaleEater--;
+                        }
+                        else if (global.matrix[array[a].y][array[a].x] == 2) {
+                            // global.maleEater--;
+                        }
                         array.splice(a, 1);
                         a--;
                     }

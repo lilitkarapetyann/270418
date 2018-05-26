@@ -54,8 +54,10 @@ socket.on('matrix', function (data) {
 });
 
 socket.on("lightening", function (data) {
-    if (matrix[data.y][data.x] != 0)
-        lightening(data.x * side + Math.round(side / 2), data.y * side + Math.round(side / 2));
+    if (data) {
+        if (matrix[data.y][data.x] != 0)
+            lightening(data.x * side + Math.round(side / 2), data.y * side + Math.round(side / 2));
+    }
 });
 
 
